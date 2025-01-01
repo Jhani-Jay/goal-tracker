@@ -1,1 +1,54 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'variables' as var;
+@use 'mixins' as mix;
+
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+h1, h2, h3, h4, h5, h6, p, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body * {
+    box-sizing: border-box;
+}
+body {
+    width: 100%;
+    height: 100vh;
+    font-family: var.$font-family;
+    background-color: var.$very-dark-gray;
+}
+app-root {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 300px repeat(3, 1fr);
+    grid-template-rows: 80px 1fr;
+}
+app-nav-bar,
+app-side-bar {
+    background-color: var.$dark-gray;
+}
+app-nav-bar {
+    @include mix.flex();
+    @include mix.flex-position(space-between, center);
+    width: 100%;
+}
+app-side-bar {
+    @include mix.flex(column, 2rem);
+    @include mix.flex-position(flex-start, stretch);
+    width: 100%;
+}
+app-goal {
+    @include mix.flex();
+    padding: 1rem 0 1rem 1rem;
+    width: 100%;
+    height: 100%;
+    
+
+}
+
+router-outlet {
+    display: none;
+}

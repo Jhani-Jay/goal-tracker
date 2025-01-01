@@ -1,0 +1,21 @@
+@use 'variables' as var;
+@use 'mixins' as mix;
+
+app-nav-bar {
+    grid-column: 2 / -1;
+    grid-row: 1 / 2;
+}
+
+app-side-bar {
+    grid-column: 1 / 2;
+    grid-row: 1 / -1;
+}
+
+main {
+    width: 100%;
+    height: 100%;
+    grid-column: 2 / -1;
+    grid-row: 2 / -1;
+    color: var.$white;
+    overflow-x: hidden;
+}
