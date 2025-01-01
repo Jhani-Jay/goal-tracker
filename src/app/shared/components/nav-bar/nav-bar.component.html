@@ -4,9 +4,17 @@
 
 <div class="control-panel">
     <p-button 
-        label="Add New Task" 
+        label="Add New milestone" 
         icon="pi pi-plus" rounded="true" 
         class="control-panel__add-new-milestone"
     />
-    <p-button icon="pi pi-ellipsis-v" class="control-panel__settings" />
+    <p-button icon="pi pi-ellipsis-v" 
+        class="control-panel__settings" 
+        (onClick)="menu.toggle($event)"
+    />
+    <p-menu #menu 
+        [model]="items" 
+        [popup]="true" 
+    />
+        
 </div>
