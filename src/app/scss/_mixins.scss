@@ -1,0 +1,51 @@
+@use 'variables' as var;
+
+@mixin headingXl {
+  font-size: var.$font-size-heding-xl;
+  font-weight: bold;
+  line-height: 30px;
+}
+@mixin headingl {
+  font-size: var.$font-size-heding-l;
+  font-weight: bold;
+  line-height: 23px;
+}
+@mixin headingM {
+  font-size: var.$font-size-heding-m;
+  font-weight: bold;
+  line-height: 19px;
+}
+@mixin headingS {
+  font-size: var.$font-size-heding-s;
+  font-weight: bold;
+  line-height: 15px;
+}
+@mixin font-bodyM {
+  font-size: var.$font-size-body-m;
+  font-weight: medium;
+  line-height: 23px;
+}
+@mixin font-bodyS {
+  font-size: var.$font-size-body-s;
+  font-weight: bold;
+  line-height: 15px;
+}
+
+@mixin flex($direction: row, $gap: 1rem) {
+  display: flex;
+  flex-direction: $direction;
+    gap: $gap;
+}
+@mixin flex-position($justify: flex-start, $align: stretch) {
+  justify-content: $justify;
+  align-items: $align;
+}
+
+
+// buttons
+@mixin primary-button () {
+    ::ng-deep .p-button {
+        background-color: var.$main-purple;
+        color: var.$white;
+    }
+}
