@@ -1,0 +1,17 @@
+@use 'mixins' as mix;
+@use 'variables' as var;
+
+h1 {
+    font-size: var.$font-size-heding-xl;
+    color: var.$white;
+}
+
+.control-panel {
+    @include mix.primary-button();
+    &__settings {
+        ::ng-deep .p-button {
+            background-color: transparent;
+            border: none;
+        }
+    }
+}

@@ -1,0 +1,35 @@
+@use 'mixins' as mix;
+@use 'variables' as var;
+
+.logo {
+    @include mix.headingXl;
+    padding-top: .8rem;
+    margin-left: 2rem;
+    color: var.$white;
+}
+
+.all-goal-boards {
+    @include mix.flex(column);
+
+    &__header {
+        @include mix.headingS;
+        color: var.$medium-gray;
+        margin-left: 2rem;
+    }
+
+    &__list {
+        @include mix.flex(column, 2.5rem);
+        
+        // all buttons within the container
+        @include mix.primary-button();
+        ::ng-deep .p-button {
+            border-radius: 0 20px 20px 0;
+            width: 80%;
+    
+        }
+    }
+    &__item {
+        @include mix.flex(column);
+    }
+}
+
