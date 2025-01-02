@@ -10,7 +10,6 @@
 form {
     // @include mix.primary-button();
     @include mix.flex(column);
-    width: 500px;
     height: fit-content;
     padding: 2rem;
     background-color: var.$dark-gray;
@@ -66,6 +65,7 @@ form {
 ::ng-deep {
     .p-dialog {
         box-shadow: 0 0 10px 0 var.$black;
+        width: min(600px, 90%);
     }
     .p-dialog-header {
         background-color: var.$dark-gray;
