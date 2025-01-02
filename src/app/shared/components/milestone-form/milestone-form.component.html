@@ -1,0 +1,93 @@
+
+<div class="card flex justify-content-center">
+    <p-dialog 
+        header="Add new milestone" 
+        [modal]="true" 
+        [(visible)]="visible" 
+        (onHide)="hideDialog()"
+    >
+
+    <form>
+        <div class="form-element">
+            <label for="username">Milestone</label>
+            <input type="text" pInputText formControlName="text" />
+        </div>
+        <div class="form-element">
+            <label for="username">Description</label>
+            <textarea 
+              rows="5" 
+              cols="30" 
+              pInputTextarea 
+              formControlName="text">
+            </textarea>
+        </div>
+    
+        <div class="form-element comments">
+        <label for="comment">Comment</label>
+        <section class="form-element__comment">
+            <input type="text" pInputText formControlName="text" />
+            <p-button icon="pi pi-times" />
+        </section>
+        <p-button
+            class="form-element__add-comment" 
+            label="+ Add New comment" 
+            (onClick)="visible = false" 
+            rounded="true" 
+            />
+        </div>
+    
+        <p-button
+            class="form-element__button"
+            label="Create milestone" 
+            (onClick)="visible = false" 
+            rounded="true" 
+        />
+    </form>
+    
+    </p-dialog>
+</div>
+
+
+<!-- <div class="overlay" (click)="hideDialog()" >
+    <form>
+        <header>
+            <p class="title">Add new goal</p>
+        </header>
+        <div class="form-element">
+          <label for="username">Milestone</label>
+          <input type="text" pInputText formControlName="text" />
+        </div>
+    
+        <div class="form-element">
+          <label for="username">Description</label>
+          <textarea 
+            rows="5" 
+            cols="30" 
+            pInputTextarea 
+            formControlName="text">
+          </textarea>
+        </div>
+    
+        <div class="form-element comments">
+          <label for="comment">Comment</label>
+          <section class="form-element__comment">
+            <input type="text" pInputText formControlName="text" />
+            <p-button icon="pi pi-times" />
+          </section>
+          <p-button
+            class="form-element__add-comment" 
+            label="+ Add New comment" 
+            (onClick)="visible = false" 
+            rounded="true" 
+            />
+        </div>
+    
+        <p-button
+            class="form-element__button"
+            label="Create milestone" 
+            (onClick)="visible = false" 
+            rounded="true" 
+        />
+    </form>
+
+</div> -->
