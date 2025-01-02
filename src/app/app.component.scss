@@ -19,3 +19,24 @@ main {
     color: var.$white;
     overflow-x: hidden;
 }
+
+::ng-deep {
+    .p-dialog {
+        background-color: var.$dark-gray;
+        color: var.$white;
+        border-radius: 8px;
+        border: 2px solid var.$main-purple;
+        width: 60%;
+    }
+    .p-dialog-header,
+    .p-dialog-content,
+    .p-dialog-footer {
+        background-color: transparent;
+    }
+    .p-dialog-header {
+        color: var.$red;
+    }
+    .p-dialog-content {
+        color: var.$medium-gray;
+    }
+}

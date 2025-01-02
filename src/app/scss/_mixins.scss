@@ -49,3 +49,9 @@
         color: var.$white;
     }
 }
+@mixin secondary-button () {
+    ::ng-deep .p-button {
+        background-color: var.$white;
+        color: var.$main-purple;
+    }
+}

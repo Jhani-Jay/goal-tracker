@@ -3,3 +3,15 @@
 <main>
   <router-outlet />
 </main>
+
+@if ((isVisible$ | async) && activeForm() === 'goal') {
+  <app-goal-form (close)="hideForm($event)"/>
+}
+
+@if ((isVisible$ | async) && activeForm() === 'milestone') {
+  <app-milestone-form (close)="hideForm($event)"/>
+}
+
+<p-confirmDialog />
+<!-- <app-delete-modal /> -->
+

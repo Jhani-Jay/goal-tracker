@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 
 // third party libraries
 import { ButtonModule } from 'primeng/button';
-import { MenuItem, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
+import { AppService } from '@app/core/services/app-service/app.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -15,8 +16,13 @@ import { MenuModule } from 'primeng/menu';
 })
 export class NavBarComponent {
   items: MenuItem[] | undefined;
+  isVisible: boolean = false;
 
-  constructor(private messageService: MessageService) {}
+  constructor(
+    private messageService: MessageService,
+    private confirmService: ConfirmationService,
+    private appService: AppService,
+  ) {}
 
   ngOnInit() {
       this.items = [
@@ -25,22 +31,41 @@ export class NavBarComponent {
               items: [
                   {
                       label: 'Edit goal',
-                      icon: 'pi pi-file-edit'
+                      icon: 'pi pi-file-edit',
+                      command: () => this.showFormDialog()
                   },
                   {
                       label: 'Delete goal',
-                      icon: 'pi pi-trash'
+                      icon: 'pi pi-trash',
+                      command: () => this.delete()
                   }
               ]
           }
       ];
   }
 
-  update() {
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'File created', life: 3000 });
-}
+  showFormDialog() {
+    this.appService.selectedFormType.set('milestone');
+    this.appService.showDialog();
+  }
 
 delete() {
-    this.messageService.add({ severity: 'warn', summary: 'Search Completed', detail: 'No results found', life: 3000 });
+    this.confirmService.confirm({
+        message: 'Are you sure you want to delete the ‘Platform Launch’ board? This action will remove all columns and tasks and cannot be reversed.',
+        header: 'Delete this goal?',
+        icon: 'pi pi-info-circle',
+        acceptButtonStyleClass:"accept-delete",
+        rejectButtonStyleClass:"reject-delete",
+        acceptIcon:"none",
+        rejectIcon:"none",
+        accept: () => {
+          console.log('accepted...');
+            // this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
+        },
+        reject: () => {
+            // this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+        }
+    })
+    // this.messageService.add({ severity: 'warn', summary: 'Search Completed', detail: 'No results found', life: 3000 });
 }
 }
