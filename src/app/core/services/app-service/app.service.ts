@@ -9,6 +9,7 @@ export class AppService {
   private isVisibleSubject = new BehaviorSubject<boolean>(this.visible);
   private isVisible$ = this.isVisibleSubject.asObservable();
   selectedFormType = signal<string | null>(null);
+  isEdit = signal<boolean>(false);
 
   constructor() { }
   

@@ -1,28 +1,30 @@
 
 <div class="card flex justify-content-center">
     <p-dialog 
-        header="Add new goal" 
+        header="{{ isEdit() ? 'Edit goal' : 'Add new goal' }}" 
         [modal]="true" 
         [(visible)]="visible" 
         (onHide)="hideDialog()"
     >
 
-    <form>
+    <form [formGroup]="goalForm">
         <div class="form-element">
-          <label for="username">Goal title</label>
-          <input type="text" pInputText formControlName="text" />
+          <label for="goal-title">Goal title</label>
+          <input type="text" formControlName="title" id="goal-title"/>
         </div>
             
-        <div class="form-element comments">
+        <div class="form-element comments" formArrayName="comments">
           <label for="comment">Set milestones</label>
-          <section class="form-element__comment">
-            <input type="text" pInputText formControlName="text" />
-            <p-button icon="pi pi-times" />
-          </section>
+          @for (comment of comments.controls; track comment; let i = $index) {
+            <section class="form-element__comment">
+              <input type="text" pInputText [formControlName]="i" />
+              <p-button icon="pi pi-times" (click)="removeComment(i)" />
+            </section>
+          }
           <p-button
             class="form-element__add-comment" 
             label="+ Add New comment" 
-            (onClick)="visible = false" 
+            (onClick)="addComment()" 
             rounded="true" 
             />
         </div>
@@ -30,7 +32,6 @@
         <p-button
             class="form-element__button"
             label="Create milestone" 
-            (onClick)="visible = false" 
             rounded="true" 
         />
     </form>

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 // third party libraries
 import { ButtonModule } from 'primeng/button';
-import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { AppService } from '@app/core/services/app-service/app.service';
 
@@ -10,7 +10,6 @@ import { AppService } from '@app/core/services/app-service/app.service';
   selector: 'app-nav-bar',
   standalone: true,
   imports: [ButtonModule, MenuModule],
-  providers: [MessageService],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.scss'
 })
@@ -19,7 +18,6 @@ export class NavBarComponent {
   isVisible: boolean = false;
 
   constructor(
-    private messageService: MessageService,
     private confirmService: ConfirmationService,
     private appService: AppService,
   ) {}
@@ -45,8 +43,15 @@ export class NavBarComponent {
   }
 
   showFormDialog() {
+    this.appService.selectedFormType.set('goal');
+    this.appService.showDialog();
+    this.appService.isEdit.set(true);
+  }
+
+  showMilestoneFormDialog() {
     this.appService.selectedFormType.set('milestone');
     this.appService.showDialog();
+    this.appService.isEdit.set(false);
   }
 
 delete() {
@@ -59,13 +64,11 @@ delete() {
         acceptIcon:"none",
         rejectIcon:"none",
         accept: () => {
-          console.log('accepted...');
-            // this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
+          // dispatch action from here
         },
         reject: () => {
-            // this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+          return;
         }
     })
-    // this.messageService.add({ severity: 'warn', summary: 'Search Completed', detail: 'No results found', life: 3000 });
 }
 }
