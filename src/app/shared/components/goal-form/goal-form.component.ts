@@ -8,6 +8,10 @@ import { InputTextModule } from 'primeng/inputtext';
 
 // local imports
 import { AppService } from '@core/services/app-service/app.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '@app/core/model/AppState.model';
+import { onPostGoal } from '@app/core/state/goal.action';
+import { generateId } from '@app/shared/utils/uuid';
 
 @Component({
   selector: 'app-goal-form',
@@ -23,20 +27,21 @@ export class GoalFormComponent {
   isEdit = this.appSerivce.isEdit;
 
   constructor(
-    private appSerivce: AppService,
     private fb: FormBuilder,
+    private store: Store<AppState>,
+    private appSerivce: AppService,
   ) {
     this.createForm();
   };
 
   get comments() {
-    return this.goalForm.get('comments') as FormArray;
+    return this.goalForm.get('milestones') as FormArray;
   }
 
   createForm() {
     this.goalForm = this.fb.group({
-      title: ['', Validators.required],
-      comments: this.fb.array([['', Validators.required]]),
+      goal: ['', Validators.required],
+      milestones: this.fb.array([['', Validators.required]]),
     })
   }
 
@@ -46,6 +51,19 @@ export class GoalFormComponent {
 
   removeComment(index: number) {
     this.comments.removeAt(index);
+  }
+
+  onSubmit() {
+    const form = this.goalForm;
+    // this.visible = false;
+    if (form.invalid) {
+      console.log('this form is invalid: ', form.value)
+      return;
+    }
+    const goal = {id: generateId(), ...form.value};
+    console.log('goal: ', goal);
+    this.store.dispatch(onPostGoal({goal}))
+     this.visible = false;
   }
 
   hideDialog() {
