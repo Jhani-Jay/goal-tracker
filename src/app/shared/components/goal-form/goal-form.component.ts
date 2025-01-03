@@ -34,23 +34,29 @@ export class GoalFormComponent {
     this.createForm();
   };
 
-  get comments() {
+  get milestones() {
     return this.goalForm.get('milestones') as FormArray;
   }
 
   createForm() {
     this.goalForm = this.fb.group({
       goal: ['', Validators.required],
-      milestones: this.fb.array([['', Validators.required]]),
+      milestones: this.fb.array([this.createControl()]),
+    })
+  }
+
+  createControl() {
+    return this.fb.group({
+      name: ['', Validators.required]
     })
   }
 
   addComment() {
-    this.comments.push(this.fb.control('', Validators.required));
+    this.milestones.push(this.createControl());
   }
 
   removeComment(index: number) {
-    this.comments.removeAt(index);
+    this.milestones.removeAt(index);
   }
 
   onSubmit() {

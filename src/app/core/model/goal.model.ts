@@ -1,7 +1,7 @@
 export interface Goal {
     id: string;
     goal: string;
-    milestone: Milestone[];
+    milestones: Milestone[];
 }
 
 export interface Milestone {

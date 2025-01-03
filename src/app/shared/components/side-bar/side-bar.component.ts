@@ -35,13 +35,12 @@ export class SideBarComponent {
   }
 
   selectedGoal(id:string, goalName:string) {
-    console.log('id: ', id);
     const data = { id, title: goalName};
     this.goalTrackerService.selectedGoal.set(data);
-    this.store.select(goal(id)).subscribe(
-      value => console.log(value)
-    )
-    // this.router.navigate([`goal/${id}`]);
+    // this.store.select(goal(id)).subscribe(
+    //   value => console.log(value)
+    // )
+    this.router.navigate([`goal/${id}`]);
   }
 
 }

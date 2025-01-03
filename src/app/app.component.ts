@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
     this.store.dispatch(onLoadGoals());
     this.isVisible$ = this.appService.getVisibility();
     // this.activeForm = this.appService.selectedFormType();
-    console.log('active form is: ', this.activeForm);
+    console.log('active form is: ', this.activeForm());
   }
 
   hideForm(state:boolean) {
