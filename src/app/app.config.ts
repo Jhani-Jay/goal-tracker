@@ -6,12 +6,14 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 //third party libraries
 import { ConfirmationService, } from 'primeng/api';
+import { provideState, provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 //local imports
 import { routes } from './app.routes';
-import { provideStore } from '@ngrx/store';
-import { provideEffects } from '@ngrx/effects';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { GoalEffects } from './core/state/goal.effect';
+import { goalReducer } from './core/state/goal.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,7 +22,8 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     ConfirmationService,
     provideStore(),
-    provideEffects(),
+    provideEffects(GoalEffects),
+    provideState({name: 'goal', reducer: goalReducer}),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
 ]
 };
