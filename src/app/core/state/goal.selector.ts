@@ -9,6 +9,12 @@ const goalFeature = (state:AppState) => state.goal;
 export const goals = createSelector(
     goalFeature, selectAll
 )
+export const goal = (id:string) => createSelector(
+    goalFeature, (state) => {
+        const selected = state.entities[id];
+        return selected || null;
+    }
+)
 export const loadError = createSelector(
     goalFeature,
     (state) => state.error

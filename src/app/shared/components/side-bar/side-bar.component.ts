@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { AppState } from '@app/core/model/AppState.model';
 import { Goal } from '@app/core/model/goal.model';
 import { AppService } from '@app/core/services/app-service/app.service';
-import { goals } from '@app/core/state/goal.selector';
+import { GoalTrackerService } from '@app/core/services/goal-tracker-service/goal-tracker.service';
+import { goal, goals } from '@app/core/state/goal.selector';
 import { Store } from '@ngrx/store';
 
 // third party libraries
@@ -25,11 +26,22 @@ export class SideBarComponent {
     private router: Router,
     private store: Store<AppState>,
     private appService: AppService,
+    private goalTrackerService: GoalTrackerService,
   ) {};
 
   showFormDialog() {
     this.appService.selectedFormType.set('goal');
     this.appService.showDialog();
+  }
+
+  selectedGoal(id:string, goalName:string) {
+    console.log('id: ', id);
+    const data = { id, title: goalName};
+    this.goalTrackerService.selectedGoal.set(data);
+    this.store.select(goal(id)).subscribe(
+      value => console.log(value)
+    )
+    // this.router.navigate([`goal/${id}`]);
   }
 
 }
