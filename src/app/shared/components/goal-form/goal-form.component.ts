@@ -67,7 +67,6 @@ export class GoalFormComponent {
       return;
     }
     const goal = {id: generateId(), ...form.value};
-    console.log('goal: ', goal);
     this.store.dispatch(onPostGoal({goal}))
      this.visible = false;
   }

@@ -37,6 +37,15 @@
             rounded="true" 
             />
         </div>
+
+        <div class="form-element">
+            <label for="">Status</label>
+            <p-dropdown 
+            formControlName="status" 
+            [options]="milestone"
+            optionLabel="name"
+            placeholder="Select a status" />
+        </div>
     
         <p-button
             class="form-element__button"

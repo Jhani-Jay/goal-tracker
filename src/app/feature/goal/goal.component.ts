@@ -34,6 +34,7 @@ export class GoalComponent implements OnInit {
     this.activatedRoute.params.subscribe(
       (params) => {
         const id = params['id'];
+        this.goalTrackerService.goalId.set(id);
         this.activeGoal$ = this.store.select(goal(id));
       }
     )

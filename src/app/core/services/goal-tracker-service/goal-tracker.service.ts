@@ -8,6 +8,7 @@ import { of } from 'rxjs';
 export class GoalTrackerService {
   private goals: Goal[] = [];
   selectedGoal = signal<{id: string, title: string} | null>(null); 
+  goalId = signal<string | null>(null);
 
   constructor() { }
 
