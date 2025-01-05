@@ -12,6 +12,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@app/core/model/AppState.model';
 import { onPostGoal } from '@app/core/state/goal.action';
 import { generateId } from '@app/shared/utils/uuid';
+import { goal } from '@app/core/state/goal.selector';
+import { GoalTrackerService } from '@app/core/services/goal-tracker-service/goal-tracker.service';
 
 @Component({
   selector: 'app-goal-form',
@@ -30,8 +32,10 @@ export class GoalFormComponent {
     private fb: FormBuilder,
     private store: Store<AppState>,
     private appSerivce: AppService,
+    private goalTrackerService: GoalTrackerService,
   ) {
     this.createForm();
+    this.editForm();
   };
 
   get milestones() {
@@ -45,9 +49,27 @@ export class GoalFormComponent {
     })
   }
 
-  createControl() {
+  editForm() {
+    const isEdit = this.appSerivce.isEdit()
+    if (!isEdit) return;
+    const id = this.goalTrackerService.goalId();
+    if (id) {
+      this.store.select(goal(id)).subscribe(goal => {
+        this.goalForm.patchValue({
+          goal: goal?.goal,
+        });
+        this.milestones.clear();
+        goal?.milestones.forEach(milestone => {
+          this.milestones.push(this.createControl(milestone.name));
+        })
+      });
+
+    }
+  }
+
+  createControl(value:string = '') {
     return this.fb.group({
-      name: ['', Validators.required]
+      name: [value, Validators.required]
     })
   }
 
