@@ -7,10 +7,10 @@
         (onHide)="hideDialog()"
     >
 
-    <form [formGroup]="milestoneForm">
+    <form [formGroup]="milestoneForm" (ngSubmit)="onSubmit()">
         <div class="form-element">
             <label for="username">Milestone</label>
-            <input type="text" formControlName="title" />
+            <input type="text" formControlName="name" />
         </div>
         <div class="form-element">
             <label for="username">Description</label>
@@ -22,11 +22,11 @@
             </textarea>
         </div>
     
-        <div class="form-element comments" formArrayName="comments">
+        <div class="form-element comments" formArrayName="tasks">
         <label for="comment">Comment</label>
-        @for (comment of comments.controls; track comment; let i = $index) {
-            <section class="form-element__comment">
-                <input type="text" pInputText [formControlName]="i" />
+        @for (task of tasks.controls; track task; let i = $index) {
+            <section class="form-element__comment" [formGroupName]="i">
+                <input type="text" pInputText formControlName="title" />
                 <p-button icon="pi pi-times" (click)="removeComment(i)" />
             </section>
         }
@@ -50,7 +50,7 @@
         <p-button
             class="form-element__button"
             label="Create milestone" 
-            (onClick)="visible = false" 
+            type="submit"
             rounded="true" 
         />
     </form>

@@ -16,6 +16,8 @@ import { goal } from '@app/core/state/goal.selector';
 import { take } from 'rxjs';
 import { Goal, Milestone } from '@app/core/model/goal.model';
 import { GoalTrackerService } from '@app/core/services/goal-tracker-service/goal-tracker.service';
+import { FormService } from '@app/core/services/form-service/form.service';
+import { onUpdateGoal } from '@app/core/state/goal.action';
 
 @Component({
   selector: 'app-milestone-form',
@@ -30,6 +32,7 @@ export class MilestoneFormComponent implements OnInit {
   close = output<boolean>();
   isEdit = this.appSerivce.isEdit;
   milestone!: Milestone[] | undefined;
+  selectedGoal!:Goal;
   
   constructor(
     private fb: FormBuilder,
@@ -37,6 +40,7 @@ export class MilestoneFormComponent implements OnInit {
     private store: Store<AppState>,
     private appSerivce: AppService,
     private goalTrackerService: GoalTrackerService,
+    private formService: FormService,
   ) {
     this.createForm();
   };
@@ -47,6 +51,7 @@ export class MilestoneFormComponent implements OnInit {
       this.store.select(goal(id)).pipe(take(1)).subscribe(
         goal => {
           if (goal) {
+            this.selectedGoal = goal; // make it more efficient later
             this.milestone = goal.milestones;
           }
         }
@@ -54,32 +59,66 @@ export class MilestoneFormComponent implements OnInit {
     };
   }
 
-  get comments() {
-    return this.milestoneForm.get('comments') as FormArray;
+  get tasks() {
+    return this.milestoneForm.get('tasks') as FormArray;
   }
 
   getControl(form: FormGroup, control: string) {
     return form.get(control) as FormArray;
   }
-
+  
   createForm() {
     this.milestoneForm = this.fb.group({
-      title: ['', Validators.required],
+      name: ['', Validators.required],
       description: ['', Validators.required],
-      comments: this.fb.array([['', Validators.required]]),
-      status: [''],
-      // status: this.fb.array([]),
+      tasks: this.fb.array([this.createTask()]),
+      status: ['', Validators.required],
     });
-    // this.getControl(this.milestoneForm, 'status').push()
-    // this.goal?.milestones.forEach(milestone => this.getControl(this.milestoneForm, 'status').push(milestone.name));
+  }
+
+  createTask() {
+    return this.fb.group({
+      title: ['', Validators.required],
+      isCompleted: [false, Validators.required],
+    })
   }
 
   addComment() {
-    this.comments.push(this.fb.control('', Validators.required));
+    this.tasks.push(this.createTask());
   }
 
   removeComment(index: number) {
-    this.comments.removeAt(index);
+    this.tasks.removeAt(index);
+  }
+
+  // const
+
+  onSubmit() {
+    const response = this.formService.validate(this.milestoneForm);
+    if (!response) return;
+    console.log('selected goal: ', this.selectedGoal);
+
+    const updatedData = {
+      ...this.selectedGoal,
+      milestones: this.selectedGoal.milestones.map(milestone => {
+        if (milestone.name === response.status.name) {
+          const updated = {
+            ...milestone,
+            tasks: milestone.tasks ? [response, ...milestone.tasks] : [response]
+          };
+          return updated;
+        } else {
+          return milestone
+        }
+      })
+    };
+
+    this.store.dispatch(onUpdateGoal({goal: updatedData}));
+
+
+
+    
+    this.visible = false;
   }
 
   hideDialog() {

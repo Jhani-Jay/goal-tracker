@@ -7,10 +7,17 @@ export interface Goal {
 export interface Milestone {
     id: string;
     name: string;
-    comments: Comment[];
+    tasks: Task[];
+}
+
+export interface Task {
+    title: string;
+    description: string;
+    status: {name: string};
+    isCompleted: boolean;
+    comment: Comment[];
 }
 
 export interface Comment {
-    id: string;
     comment: string;
 }

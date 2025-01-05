@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 
 // third party libraries
 import { ButtonModule } from 'primeng/button';
-import { Observable, take } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-goal',
@@ -21,7 +21,7 @@ import { Observable, take } from 'rxjs';
 export class GoalComponent implements OnInit {
   activeGoal$!:Observable<Goal | null>;
   selectedGoalId = this.goalTrackerService.selectedGoal()?.id;
-  id = this.goalTrackerService.selectedGoal
+  id = this.goalTrackerService.selectedGoal;
 
   constructor (
     private store: Store<AppState>,
@@ -36,6 +36,9 @@ export class GoalComponent implements OnInit {
         const id = params['id'];
         this.goalTrackerService.goalId.set(id);
         this.activeGoal$ = this.store.select(goal(id));
+        this.activeGoal$.subscribe(value => {
+          console.log(value);
+        })
       }
     )
     
@@ -51,4 +54,6 @@ export class GoalComponent implements OnInit {
     //   this.router.navigate(['']);
     // }
   }
+
+
 }
