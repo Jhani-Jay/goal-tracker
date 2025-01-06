@@ -10,10 +10,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { AppService } from '@core/services/app-service/app.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/core/model/AppState.model';
-import { onPostGoal } from '@app/core/state/goal.action';
+import { onPostGoal, onUpdateGoal } from '@app/core/state/goal.action';
 import { generateId } from '@app/shared/utils/uuid';
 import { goal } from '@app/core/state/goal.selector';
 import { GoalTrackerService } from '@app/core/services/goal-tracker-service/goal-tracker.service';
+import { FormService } from '@app/core/services/form-service/form.service';
+import { take } from 'rxjs';
+import { Goal } from '@app/core/model/goal.model';
 
 @Component({
   selector: 'app-goal-form',
@@ -33,6 +36,7 @@ export class GoalFormComponent {
     private store: Store<AppState>,
     private appSerivce: AppService,
     private goalTrackerService: GoalTrackerService,
+    private formService: FormService,
   ) {
     this.createForm();
     this.editForm();
@@ -91,6 +95,35 @@ export class GoalFormComponent {
     const goal = {id: generateId(), ...form.value};
     this.store.dispatch(onPostGoal({goal}))
      this.visible = false;
+  }
+
+  onSaveChanges() {
+    const form = this.goalForm;
+    const response = this.formService.validate(form);
+    const id = this.goalTrackerService.goalId();
+    if (id) {
+      const updatedGoal:Goal = {id, ...response};
+      this.store.select(goal(id)).pipe(take(1)).subscribe(goalData => {
+
+        const tasksUpdate = updatedGoal.milestones.map((milestone, index) => {
+          return {
+            ...milestone,
+            tasks: goalData?.milestones[index]?.tasks || [],
+          };
+        })
+
+        const goal = {
+          ...updatedGoal,
+          milestones: tasksUpdate,
+        }
+        
+        this.store.dispatch(onUpdateGoal({goal}));
+      })
+      
+      // this.store.dispatch(onGoalUpdated({goal: updatedGoal}));
+
+    }
+    this.visible = false;
   }
 
   hideDialog() {

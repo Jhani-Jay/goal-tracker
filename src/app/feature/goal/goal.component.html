@@ -15,7 +15,7 @@
             <div class="milestone__goals">
                 @for (actionStep of milestone.tasks; track $index) {
                     <div class="milestone__goal">
-                        <p class="milestone__goal-text">{{ actionStep.title }}</p>
+                        <p class="milestone__goal-text">{{ actionStep.name }}</p>
                         <p class="milestone__goal-comment">{{ actionStep.description }}</p>
                     </div>
 
@@ -30,6 +30,7 @@
             label="+ Add New Milestone" 
             rounded="true" 
             class="add-milestone__button"
+            (click)="displayMilestoneForm()"
         />
     </section>
 </section>

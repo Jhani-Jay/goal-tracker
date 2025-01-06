@@ -11,7 +11,7 @@ export interface Milestone {
 }
 
 export interface Task {
-    title: string;
+    name: string;
     description: string;
     status: {name: string};
     isCompleted: boolean;

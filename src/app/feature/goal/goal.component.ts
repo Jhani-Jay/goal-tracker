@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppState } from '@app/core/model/AppState.model';
 import { Goal } from '@app/core/model/goal.model';
+import { AppService } from '@app/core/services/app-service/app.service';
 import { GoalTrackerService } from '@app/core/services/goal-tracker-service/goal-tracker.service';
 import { goal } from '@app/core/state/goal.selector';
 import { Store } from '@ngrx/store';
@@ -28,6 +29,7 @@ export class GoalComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private goalTrackerService: GoalTrackerService,
+    private appService: AppService,
   ) {};
 
   ngOnInit(): void {
@@ -36,9 +38,6 @@ export class GoalComponent implements OnInit {
         const id = params['id'];
         this.goalTrackerService.goalId.set(id);
         this.activeGoal$ = this.store.select(goal(id));
-        this.activeGoal$.subscribe(value => {
-          console.log(value);
-        })
       }
     )
     
@@ -53,6 +52,10 @@ export class GoalComponent implements OnInit {
     // } else {
     //   this.router.navigate(['']);
     // }
+  }
+
+  displayMilestoneForm() {
+    this.appService.showFormDialog();
   }
 
 

@@ -52,9 +52,7 @@ export class NavBarComponent {
   }
 
   showFormDialog() {
-    this.appService.selectedFormType.set('goal');
-    this.appService.showDialog();
-    this.appService.isEdit.set(true);
+    this.appService.showFormDialog();
   }
 
   showMilestoneFormDialog() {
