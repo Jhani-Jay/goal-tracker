@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { Goal } from '@app/core/model/goal.model';
 import { of } from 'rxjs';
+import { Task } from '@app/core/model/goal.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ export class GoalTrackerService {
   private goals: Goal[] = [];
   selectedGoal = signal<{id: string, title: string} | null>(null); 
   goalId = signal<string | null>(null);
+  selectedSubtask = signal<Task | null>(null);
 
   constructor() { }
 

@@ -15,7 +15,7 @@ export interface Task {
     description: string;
     status: {name: string};
     isCompleted: boolean;
-    comment: Comment[];
+    comments: string[];
 }
 
 export interface Comment {

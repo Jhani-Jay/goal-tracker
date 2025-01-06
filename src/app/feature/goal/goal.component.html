@@ -14,7 +14,7 @@
             <!-- micro goals / achieveable goals -->
             <div class="milestone__goals">
                 @for (actionStep of milestone.tasks; track $index) {
-                    <div class="milestone__goal">
+                    <div class="milestone__goal" (click)="showSubTaskDetails(actionStep)">
                         <p class="milestone__goal-text">{{ actionStep.name }}</p>
                         <p class="milestone__goal-comment">{{ actionStep.description }}</p>
                     </div>

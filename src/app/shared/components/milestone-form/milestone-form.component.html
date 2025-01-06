@@ -22,22 +22,6 @@
             </textarea>
         </div>
     
-        <div class="form-element comments" formArrayName="tasks">
-        <label for="comment">Comment</label>
-        @for (task of tasks.controls; track task; let i = $index) {
-            <section class="form-element__comment" [formGroupName]="i">
-                <input type="text" pInputText formControlName="title" />
-                <p-button icon="pi pi-times" (click)="removeComment(i)" />
-            </section>
-        }
-        <p-button
-            class="form-element__add-comment" 
-            label="+ Add New comment" 
-            (click)="addComment()"
-            rounded="true" 
-            />
-        </div>
-
         <div class="form-element">
             <label for="">Status</label>
             <p-dropdown 

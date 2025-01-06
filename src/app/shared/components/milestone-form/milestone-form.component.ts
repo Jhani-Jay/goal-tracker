@@ -60,7 +60,7 @@ export class MilestoneFormComponent implements OnInit {
   }
 
   get tasks() {
-    return this.milestoneForm.get('tasks') as FormArray;
+    return this.milestoneForm.get('subtask') as FormArray;
   }
 
   getControl(form: FormGroup, control: string) {
@@ -71,7 +71,7 @@ export class MilestoneFormComponent implements OnInit {
     this.milestoneForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      tasks: this.fb.array([this.createTask()]),
+      isCompleted: [false, Validators.required],
       status: ['', Validators.required],
     });
   }
@@ -90,8 +90,6 @@ export class MilestoneFormComponent implements OnInit {
   removeComment(index: number) {
     this.tasks.removeAt(index);
   }
-
-  // const
 
   onSubmit() {
     const response = this.formService.validate(this.milestoneForm);
@@ -114,9 +112,6 @@ export class MilestoneFormComponent implements OnInit {
     };
 
     this.store.dispatch(onUpdateGoal({goal: updatedData}));
-
-
-
     
     this.visible = false;
   }

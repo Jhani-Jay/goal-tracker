@@ -15,11 +15,12 @@ import { GoalFormComponent } from "./shared/components/goal-form/goal-form.compo
 import { MilestoneFormComponent } from "./shared/components/milestone-form/milestone-form.component";
 import { AppState } from './core/model/AppState.model';
 import { onLoadGoals } from './core/state/goal.action';
+import { SubtaskDetailsComponent } from './shared/components/subtask-details/subtask-details.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, AsyncPipe, ConfirmDialogModule, NavBarComponent, SideBarComponent, GoalFormComponent, MilestoneFormComponent, ],
+  imports: [RouterOutlet, AsyncPipe, ConfirmDialogModule, NavBarComponent, SideBarComponent, GoalFormComponent, MilestoneFormComponent, SubtaskDetailsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

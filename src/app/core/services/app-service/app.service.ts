@@ -32,4 +32,9 @@ export class AppService {
     this.showDialog();
     this.isEdit.set(true);
   }
+
+  showSubtaskDetail() {
+    this.selectedFormType.set('subtask-details');
+    this.showDialog();
+  }
 }
