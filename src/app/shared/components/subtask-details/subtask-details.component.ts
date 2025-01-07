@@ -1,5 +1,5 @@
 import { Component, input, OnInit, output } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 // third party packages
 import { DialogModule } from 'primeng/dialog';
@@ -22,7 +22,7 @@ import { onUpdateGoal } from '@app/core/state/goal.action';
 @Component({
   selector: 'app-subtask-details',
   standalone: true,
-  imports: [AsyncPipe, DialogModule, ButtonModule, InputTextModule, CheckboxModule, DropdownModule, InputTextareaModule],
+  imports: [FormsModule, DialogModule, ButtonModule, InputTextModule, CheckboxModule, DropdownModule, InputTextareaModule],
   templateUrl: './subtask-details.component.html',
   styleUrl: './subtask-details.component.scss'
 })
@@ -32,6 +32,7 @@ export class SubtaskDetailsComponent implements OnInit{
   visible: boolean = true;
   goalId = this.goalTrackerService.goalId();;
   actionGoal: Task | null = (null);
+  value:string = '';
 
   constructor (
     private store: Store<AppState>,
@@ -64,8 +65,9 @@ export class SubtaskDetailsComponent implements OnInit{
       }
     )
   }
-
-  addComment(comment: string) {
+  
+  addComment() {
+    const comment = this.value;
     if (!this.goalId) return;
     this.store.select(goal(this.goalId)).pipe(take(1)).subscribe(
       data => {

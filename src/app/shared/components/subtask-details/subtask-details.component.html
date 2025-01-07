@@ -12,26 +12,30 @@
             {{ actionGoal.description }}
         </p>
 
-        <p-button label="Mark as completed" (click)="markAsCompleted()" />
+        <p-button class="mark-as-completed" label="Mark as completed" (click)="markAsCompleted()" />
 
         <section class="add-comment">
             <p> Add your comments </p>
-            <textarea 
-                rows="5" 
+            <textarea
+                class="add-comment__field" 
+                rows="5"
                 cols="30" 
-                #Comment 
-                formControlName="text">
+                pInputTextarea 
+                [(ngModel)]="value">
             </textarea>
 
-            <p-button label="Add comment" (click)="addComment(Comment.value)" />
+            <p-button label="Add comment" (click)="addComment()" />
 
         </section>
 
-        <section class="comments">
-            @for (comment of actionGoal.comments; track $index) {
-                <p class="comment"> {{ comment }} </p>
-            }
-        </section>
+        @if (actionGoal.comments && actionGoal.comments.length !== 0) {
+            <section class="comments">
+                <p class="comments__header">Your comments</p>
+                @for (comment of actionGoal.comments; track $index) {
+                    <p class="comment"> {{ comment }} </p>
+                }
+            </section>
+        }
         </p-dialog>
     }
   </div>
