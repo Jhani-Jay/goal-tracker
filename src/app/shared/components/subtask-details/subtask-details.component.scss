@@ -24,6 +24,10 @@
     }
 }
 
+textarea {
+    color: var.$white;
+}
+
 ::ng-deep {
     .p-dialog {
         max-height: 500px;

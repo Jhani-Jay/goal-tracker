@@ -1,4 +1,5 @@
 import { Component, input, OnInit, output } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // third party packages
@@ -14,7 +15,7 @@ import { AppService } from '@app/core/services/app-service/app.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/core/model/AppState.model';
 import { GoalTrackerService } from '@app/core/services/goal-tracker-service/goal-tracker.service';
-import { take } from 'rxjs';
+import { Observable, of, take } from 'rxjs';
 import { goal } from '@app/core/state/goal.selector';
 import { Task } from '@app/core/model/goal.model';
 import { onUpdateGoal } from '@app/core/state/goal.action';
@@ -22,7 +23,7 @@ import { onUpdateGoal } from '@app/core/state/goal.action';
 @Component({
   selector: 'app-subtask-details',
   standalone: true,
-  imports: [FormsModule, DialogModule, ButtonModule, InputTextModule, CheckboxModule, DropdownModule, InputTextareaModule],
+  imports: [AsyncPipe, FormsModule, DialogModule, ButtonModule, InputTextModule, CheckboxModule, DropdownModule, InputTextareaModule],
   templateUrl: './subtask-details.component.html',
   styleUrl: './subtask-details.component.scss'
 })
@@ -33,6 +34,7 @@ export class SubtaskDetailsComponent implements OnInit{
   goalId = this.goalTrackerService.goalId();;
   actionGoal: Task | null = (null);
   value:string = '';
+  comments: Observable<string[] | null> = of(null);
 
   constructor (
     private store: Store<AppState>,
@@ -42,7 +44,8 @@ export class SubtaskDetailsComponent implements OnInit{
 
   ngOnInit(): void {
     this.actionGoal = this.goalTrackerService.selectedSubtask();
-    console.log(this.actionGoal);
+    // console.log(this.actionGoal);
+    this.comments = this.goalTrackerService.selectSubtaskData();
   };
 
   markAsCompleted() {
@@ -75,10 +78,16 @@ export class SubtaskDetailsComponent implements OnInit{
           ...data,
           milestones: data?.milestones.map(milestone => ({
             ...milestone,
-            tasks: milestone.tasks.map(task => ({
-              ...task,
-              comments: !task.comments ? [comment, ] : [comment, ...task.comments],
-            }))
+            tasks: milestone.tasks.map(task => {
+              if (task.name === this.goalTrackerService.subtaskId()) {
+                return ({
+                  ...task,
+                  comments: !task.comments ? [comment, ] : [comment, ...task.comments],
+                })
+              } else {
+                return {...task}
+              }
+            })
           }))
         };
         this.store.dispatch(onUpdateGoal({goal: updatedGoal}));

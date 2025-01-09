@@ -53,8 +53,9 @@ export class GoalComponent implements OnInit {
     this.appService.showFormDialog();
   }
 
-  showSubTaskDetails(task: Task) { 
+  showSubTaskDetails(task: Task) {
     this.goalTrackerService.selectedSubtask.set(task);
+    this.goalTrackerService.subtaskId.set(task.name);
     this.appService.showSubtaskDetail();
   }
 

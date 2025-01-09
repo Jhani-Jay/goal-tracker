@@ -11,4 +11,8 @@ export class FormService {
   validate(form:FormGroup) {
     return form.invalid ? null : form.value;
   }
+
+  reset(form:FormGroup) {
+    form.reset();
+  }
 }

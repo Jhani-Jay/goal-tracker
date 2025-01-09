@@ -28,10 +28,10 @@
 
         </section>
 
-        @if (actionGoal.comments && actionGoal.comments.length !== 0) {
+        @if ((comments | async) && (comments | async)?.length !== 0) {
             <section class="comments">
                 <p class="comments__header">Your comments</p>
-                @for (comment of actionGoal.comments; track $index) {
+                @for (comment of (comments | async); track $index) {
                     <p class="comment"> {{ comment }} </p>
                 }
             </section>
