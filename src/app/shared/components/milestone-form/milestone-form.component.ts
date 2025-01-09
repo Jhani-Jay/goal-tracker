@@ -31,7 +31,7 @@ export class MilestoneFormComponent implements OnInit {
   visible: boolean = true;
   close = output<boolean>();
   isEdit = this.appSerivce.isEdit;
-  milestone!: Milestone[] | undefined;
+  milestone!: {name:string}[] | undefined;
   selectedGoal!:Goal;
   
   constructor(
@@ -52,17 +52,13 @@ export class MilestoneFormComponent implements OnInit {
         goal => {
           if (goal) {
             this.selectedGoal = goal; // make it more efficient later
-            this.milestone = goal.milestones;
+            this.milestone = goal.milestones.map(milestone => ({name: milestone.name}));
           }
         }
       )
     };
   }
-
-  get tasks() {
-    return this.milestoneForm.get('subtask') as FormArray;
-  }
-
+  
   getControl(form: FormGroup, control: string) {
     return form.get(control) as FormArray;
   }
@@ -75,26 +71,10 @@ export class MilestoneFormComponent implements OnInit {
       status: ['', Validators.required],
     });
   }
-
-  createTask() {
-    return this.fb.group({
-      title: ['', Validators.required],
-      isCompleted: [false, Validators.required],
-    })
-  }
-
-  addComment() {
-    this.tasks.push(this.createTask());
-  }
-
-  removeComment(index: number) {
-    this.tasks.removeAt(index);
-  }
-
+  
   onSubmit() {
     const response = this.formService.validate(this.milestoneForm);
     if (!response) return;
-    console.log('selected goal: ', this.selectedGoal);
 
     const updatedData = {
       ...this.selectedGoal,
@@ -114,6 +94,7 @@ export class MilestoneFormComponent implements OnInit {
     this.store.dispatch(onUpdateGoal({goal: updatedData}));
     
     this.visible = false;
+    this.formService.reset(this.milestoneForm);
   }
 
   hideDialog() {
