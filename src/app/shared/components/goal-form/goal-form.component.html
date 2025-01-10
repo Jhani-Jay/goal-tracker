@@ -7,17 +7,17 @@
         (onHide)="hideDialog()"
     >
 
-    <form [formGroup]="goalForm">
+    <form [formGroup]="goalForm" (submit)="isEdit() ? onSaveChanges() : onSubmit()">
         <div class="form-element">
           <label for="goal-title">Goal title</label>
-          <input type="text" formControlName="title" id="goal-title"/>
+          <input type="text" formControlName="goal" id="goal-title"/>
         </div>
             
-        <div class="form-element comments" formArrayName="comments">
+        <div class="form-element comments" formArrayName="milestones">
           <label for="comment">Set milestones</label>
-          @for (comment of comments.controls; track comment; let i = $index) {
-            <section class="form-element__comment">
-              <input type="text" pInputText [formControlName]="i" />
+          @for (milestone of milestones.controls; track milestone; let i = $index) {
+            <section class="form-element__comment" [formGroupName]="i">
+              <input type="text" pInputText formControlName="name" />
               <p-button icon="pi pi-times" (click)="removeComment(i)" />
             </section>
           }
@@ -31,8 +31,9 @@
     
         <p-button
             class="form-element__button"
-            label="Create milestone" 
+            [label]="isEdit() ? 'Save Changes' : 'Create goal'" 
             rounded="true" 
+            type="submit"
         />
     </form>
     

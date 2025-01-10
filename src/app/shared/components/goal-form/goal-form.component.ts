@@ -8,6 +8,15 @@ import { InputTextModule } from 'primeng/inputtext';
 
 // local imports
 import { AppService } from '@core/services/app-service/app.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '@app/core/model/AppState.model';
+import { onPostGoal, onUpdateGoal } from '@app/core/state/goal.action';
+import { generateId } from '@app/shared/utils/uuid';
+import { goal } from '@app/core/state/goal.selector';
+import { GoalTrackerService } from '@app/core/services/goal-tracker-service/goal-tracker.service';
+import { FormService } from '@app/core/services/form-service/form.service';
+import { take } from 'rxjs';
+import { Goal } from '@app/core/model/goal.model';
 
 @Component({
   selector: 'app-goal-form',
@@ -23,29 +32,98 @@ export class GoalFormComponent {
   isEdit = this.appSerivce.isEdit;
 
   constructor(
-    private appSerivce: AppService,
     private fb: FormBuilder,
+    private store: Store<AppState>,
+    private appSerivce: AppService,
+    private goalTrackerService: GoalTrackerService,
+    private formService: FormService,
   ) {
     this.createForm();
+    this.editForm();
   };
 
-  get comments() {
-    return this.goalForm.get('comments') as FormArray;
+  get milestones() {
+    return this.goalForm.get('milestones') as FormArray;
   }
 
   createForm() {
     this.goalForm = this.fb.group({
-      title: ['', Validators.required],
-      comments: this.fb.array([['', Validators.required]]),
+      goal: ['', Validators.required],
+      milestones: this.fb.array([this.createControl()]),
+    })
+  }
+
+  editForm() {
+    const isEdit = this.appSerivce.isEdit()
+    if (!isEdit) return;
+    const id = this.goalTrackerService.goalId();
+    if (id) {
+      this.store.select(goal(id)).subscribe(goal => {
+        this.goalForm.patchValue({
+          goal: goal?.goal,
+        });
+        this.milestones.clear();
+        goal?.milestones.forEach(milestone => {
+          this.milestones.push(this.createControl(milestone.name));
+        })
+      });
+
+    }
+  }
+
+  createControl(value:string = '') {
+    return this.fb.group({
+      name: [value, Validators.required]
     })
   }
 
   addComment() {
-    this.comments.push(this.fb.control('', Validators.required));
+    this.milestones.push(this.createControl());
   }
 
   removeComment(index: number) {
-    this.comments.removeAt(index);
+    this.milestones.removeAt(index);
+  }
+
+  onSubmit() {
+    const form = this.goalForm;
+    // this.visible = false;
+    if (form.invalid) {
+      console.log('this form is invalid: ', form.value)
+      return;
+    }
+    const goal = {id: generateId(), ...form.value};
+    this.store.dispatch(onPostGoal({goal}))
+     this.visible = false;
+  }
+
+  onSaveChanges() {
+    const form = this.goalForm;
+    const response = this.formService.validate(form);
+    const id = this.goalTrackerService.goalId();
+    if (id) {
+      const updatedGoal:Goal = {id, ...response};
+      this.store.select(goal(id)).pipe(take(1)).subscribe(goalData => {
+
+        const tasksUpdate = updatedGoal.milestones.map((milestone, index) => {
+          return {
+            ...milestone,
+            tasks: goalData?.milestones[index]?.tasks || [],
+          };
+        })
+
+        const goal = {
+          ...updatedGoal,
+          milestones: tasksUpdate,
+        }
+        
+        this.store.dispatch(onUpdateGoal({goal}));
+      })
+      
+      // this.store.dispatch(onGoalUpdated({goal: updatedGoal}));
+
+    }
+    this.visible = false;
   }
 
   hideDialog() {

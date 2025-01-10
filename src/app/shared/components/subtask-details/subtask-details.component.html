@@ -1,0 +1,41 @@
+<div class="card flex justify-content-center">
+    @if (actionGoal) {
+        <p-dialog 
+            [header]=" actionGoal.name " 
+            (onHide)="hideDialog()" 
+            [modal]="true" 
+            [(visible)]="visible" 
+            [style]="{ width: '25rem' }"
+        >
+
+        <p>
+            {{ actionGoal.description }}
+        </p>
+
+        <p-button class="mark-as-completed" label="Mark as completed" (click)="markAsCompleted()" />
+
+        <section class="add-comment">
+            <p> Add your comments </p>
+            <textarea
+                class="add-comment__field" 
+                rows="5"
+                cols="30" 
+                pInputTextarea 
+                [(ngModel)]="value">
+            </textarea>
+
+            <p-button label="Add comment" (click)="addComment()" />
+
+        </section>
+
+        @if ((comments | async) && (comments | async)?.length !== 0) {
+            <section class="comments">
+                <p class="comments__header">Your comments</p>
+                @for (comment of (comments | async); track $index) {
+                    <p class="comment"> {{ comment }} </p>
+                }
+            </section>
+        }
+        </p-dialog>
+    }
+  </div>

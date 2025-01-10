@@ -1,41 +1,36 @@
 
 <!-- existing milestones -->
 <section class="milestones">
-    <div class="milestone">
-        <header>
-            <div class="milestone__marker"></div>
-            <div class="milestone__name">
-                <p class="milestone__name-text">Todo</p>
-                <p class="milestone-name-number">(4)</p>
-            </div>
-        </header>
+    @for (milestone of (activeGoal$ | async)?.milestones; track $index) {
+        <div class="milestone">
+            <header>
+                <div class="milestone__marker"></div>
+                <div class="milestone__name">
+                    <p class="milestone__name-text">{{ milestone.name }}</p>
+                    <!-- <p class="milestone-name-number">({{ milestone.comments.length }})</p> -->
+                </div>
+            </header>
+    
+            <!-- micro goals / achieveable goals -->
+            <div class="milestone__goals">
+                @for (actionStep of milestone.tasks; track $index) {
+                    <div class="milestone__goal" (click)="showSubTaskDetails(actionStep)">
+                        <p class="milestone__goal-text">{{ actionStep.name }}</p>
+                        <p class="milestone__goal-comment">{{ actionStep.description }}</p>
+                    </div>
 
-        <!-- micro goals / achieveable goals -->
-        <div class="milestone__goals">
-            <div class="milestone__goal">
-                <p class="milestone__goal-text">Create a new project</p>
-                <p class="milestone__goal-date">Due: 12th June 2021</p>
-            </div>
-            <div class="milestone__goal">
-                <p class="milestone__goal-text">Create a new project</p>
-                <p class="milestone__goal-date">Due: 12th June 2021</p>
-            </div>
-            <div class="milestone__goal">
-                <p class="milestone__goal-text">Create a new project</p>
-                <p class="milestone__goal-date">Due: 12th June 2021</p>
-            </div>
-            <div class="milestone__goal">
-                <p class="milestone__goal-text">Create a new project</p>
-                <p class="milestone__goal-date">Due: 12th June 2021</p>
+                }
             </div>
         </div>
-    </div>
+
+    }
 
     <section class="add-milestone">
         <p-button 
             label="+ Add New Milestone" 
             rounded="true" 
             class="add-milestone__button"
+            (click)="displayMilestoneForm()"
         />
     </section>
 </section>

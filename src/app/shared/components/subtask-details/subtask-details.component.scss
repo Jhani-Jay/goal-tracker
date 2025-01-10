@@ -1,0 +1,47 @@
+@use 'variables' as var;
+@use 'mixins' as mix;
+
+.mark-as-completed {
+    @include mix.secondary-button();
+    // width: 100%;
+    margin-bottom: 1.5rem;
+
+}
+.add-comment {
+    @include mix.flex(column);
+    &__field {
+        width: 100%;
+        background-color: transparent;
+        border: 1px solid var.$lines-dark;
+
+    }
+}
+.comments {
+    @include mix.flex(column);
+    margin-top: 2rem;
+    &__header {
+        @include mix.headingl;
+    }
+}
+
+textarea {
+    color: var.$white;
+}
+
+::ng-deep {
+    .p-dialog {
+        max-height: 500px;
+        overflow: scroll;
+        scrollbar-width: none;
+    }
+    .p-dialog-title {
+        color: var.$white;
+    }
+    .p-dialog-content {
+        @include mix.flex(column);
+        
+    }
+    .p-button {
+        width: 100%;
+    }
+}

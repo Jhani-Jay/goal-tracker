@@ -39,8 +39,18 @@
         @include mix.flex(column);
         @include mix.flex-position();
         padding: 1rem;
-        border-radius: 20px;
+        border-radius: 8px;
         background-color: var.$dark-gray;
+        box-shadow: 0 1px 4px 0 color-mix(in srgb,#364E7E 80%, transparent);
+
+        &-text {
+            @include mix.headingl;
+            color: var.$white;
+        }
+        &-comment {
+            @include mix.headingS;
+            color: var.$medium-gray;
+        }
     }
 }
 

@@ -12,6 +12,9 @@
   <app-milestone-form (close)="hideForm($event)"/>
 }
 
+@if ((isVisible$ | async) && activeForm() === 'subtask-details') {
+  <app-subtask-details (close)="hideForm($event)" />
+}
+
 <p-confirmDialog />
-<!-- <app-delete-modal /> -->
 

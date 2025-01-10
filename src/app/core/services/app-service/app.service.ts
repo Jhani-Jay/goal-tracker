@@ -26,4 +26,15 @@ export class AppService {
   getVisibility():Observable<boolean> {
     return this.isVisible$;
   }
+
+  showFormDialog() {
+    this.selectedFormType.set('goal');
+    this.showDialog();
+    this.isEdit.set(true);
+  }
+
+  showSubtaskDetail() {
+    this.selectedFormType.set('subtask-details');
+    this.showDialog();
+  }
 }
